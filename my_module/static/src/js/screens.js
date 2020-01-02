@@ -4,7 +4,54 @@ var core = require('web.core');
 var screens = require('point_of_sale.screens');
 var gui = require('point_of_sale.gui');
 
+screens.ActionpadWidget.include({
+        renderElement: function() {
+        var self = this;
+        this._super();
+        this.$('.pay').click(function(){
+            var order = self.pos.get_order();
+            var has_valid_product_lot = _.every(order.orderlines.models, function(line){
+                return line.has_valid_product_lot();
+            });
+            //var user = self.pos.get_cashier();
+            var cashier = self.pos.get('cashier') || self.pos.get_cashier();
+       
+            if(cashier){
+                //return user.name;
+              
+                console.log(cashier);        
+                console.log( cashier.name === 'testpos');
+                if(cashier.name.includes('cshr')  || cashier.role === 'manager'){
+                    if(!has_valid_product_lot){
+                        self.gui.show_popup('confirm',{
+                            'title': _t('Empty Serial/Lot Number'),
+                            'body':  _t('One or more product(s) required serial/lot number.'),
+                            confirm: function(){
+                                self.gui.show_screen('payment');
+                            },
+                        });
+                    }else{
+                        self.gui.show_screen('payment');
+                    }
+            }else{
+                //return "";
+                console.log( "Else no permission");        
 
+                console.log( cashier);        
+                //Alert("Access denied!");
+               
+            }
+            }
+
+
+           
+        });
+        this.$('.set-customer').click(function(){
+            self.gui.show_screen('clientlist');
+        });
+    },
+});
+    
 screens.NumpadWidget.inclue({
     
         applyAccessRights: function() {
