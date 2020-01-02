@@ -2,7 +2,8 @@ odoo.define('pos_clear_orderline.pos', function (require) {
 "use strict";
 
 var screens = require('point_of_sale.screens');
-
+var PosBaseWidget = require('point_of_sale.BaseWidget');
+    
 
     var NumpadWidget = PosBaseWidget.extend({
     template:'NumpadWidget',
