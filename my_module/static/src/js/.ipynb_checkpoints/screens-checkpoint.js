@@ -67,7 +67,7 @@ console.log("hi i'm ",screens);
             });
             //var user = self.pos.get_cashier();
             var cashier = self.pos.get('cashier') || self.pos.get_cashier();
-       
+            console.log("cashier=",cashier)
             if(cashier){
                 //return user.name;
               
