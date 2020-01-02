@@ -10,7 +10,7 @@ var gui = require('point_of_sale.gui');
 
 //Custom Code
 var CustomButton = screens.ActionButtonWidget.extend({
-    template: 'CustomButton',
+    template: 'screens',
 
     button_click: function(){
 
