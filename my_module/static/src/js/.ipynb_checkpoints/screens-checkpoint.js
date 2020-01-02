@@ -5,7 +5,9 @@ var screens = require('point_of_sale.screens');
 var gui = require('point_of_sale.gui');
 
 
-console.log("hi i'm ");
+    var cashier = this.pos.get('cashier');
+    
+console.log("hi i'm ",cashier);
 
 
 
