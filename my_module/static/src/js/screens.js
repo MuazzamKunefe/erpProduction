@@ -443,6 +443,35 @@ var NumpadWidget = PosBaseWidget.extend({
         if (!has_price_control_rights && this.state.get('mode')=='price'){
             this.state.changeMode('quantity');
         }
+        if( !cashier.name.includes('cshr') && cashier.role !== 'manager'){
+            //Disable discount on item
+            this.$el.find('.mode-button[data-mode="discount"]')
+            .toggleClass('disabled-mode', true)
+            .prop('disabled', true);
+            //Disable Remove Item from Order
+            this.$el.find('.numpad-backspace')
+            .toggleClass('disabled-mode', true)
+            .prop('disabled', true);
+            //Disable returm
+            this.$('.numpad-minus')
+            .toggleClass('disabled-mode', true)
+            .prop('disabled', true);
+        }else{
+            //Enable discount on item
+            this.$el.find('.mode-button[data-mode="discount"]')
+            .toggleClass('disabled-mode', false)
+            .prop('disabled', false);
+             //Enable Remove Item from Order
+            this.$el.find('.numpad-backspace')
+            .toggleClass('disabled-mode', false)
+            .prop('disabled', false);
+
+             //Enable returm
+             this.$('.numpad-minus')
+             .toggleClass('disabled-mode', false)
+             .prop('disabled', !false);
+        }
+       
     },
     clickDeleteLastChar: function() {
         return this.state.deleteLastChar();
@@ -471,6 +500,9 @@ var NumpadWidget = PosBaseWidget.extend({
 // The action pad contains the payment button and the 
 // customer selection button
 
+   
+   
+
 var ActionpadWidget = PosBaseWidget.extend({
     template: 'ActionpadWidget',
     init: function(parent, options) {
@@ -489,17 +521,38 @@ var ActionpadWidget = PosBaseWidget.extend({
             var has_valid_product_lot = _.every(order.orderlines.models, function(line){
                 return line.has_valid_product_lot();
             });
-            if(!has_valid_product_lot){
-                self.gui.show_popup('confirm',{
-                    'title': _t('Empty Serial/Lot Number'),
-                    'body':  _t('One or more product(s) required serial/lot number.'),
-                    confirm: function(){
+            //var user = self.pos.get_cashier();
+            var cashier = self.pos.get('cashier') || self.pos.get_cashier();
+       
+            if(cashier){
+                //return user.name;
+              
+                console.log(cashier);        
+                console.log( cashier.name === 'testpos');
+                if(cashier.name.includes('cshr')  || cashier.role === 'manager'){
+                    if(!has_valid_product_lot){
+                        self.gui.show_popup('confirm',{
+                            'title': _t('Empty Serial/Lot Number'),
+                            'body':  _t('One or more product(s) required serial/lot number.'),
+                            confirm: function(){
+                                self.gui.show_screen('payment');
+                            },
+                        });
+                    }else{
                         self.gui.show_screen('payment');
-                    },
-                });
+                    }
             }else{
-                self.gui.show_screen('payment');
+                //return "";
+                console.log( "Else no permission");        
+
+                console.log( cashier);        
+                //Alert("Access denied!");
+               
             }
+            }
+
+
+           
         });
         this.$('.set-customer').click(function(){
             self.gui.show_screen('clientlist');
