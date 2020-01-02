@@ -2652,7 +2652,7 @@ define_action_button({
 
 return {
     ReceiptScreenWidget: ReceiptScreenWidget,
-    ActionButtonWidget: ActionButtonWidget,
+  
     define_action_button: define_action_button,
     ScreenWidget: ScreenWidget,
     PaymentScreenWidget: PaymentScreenWidget,
