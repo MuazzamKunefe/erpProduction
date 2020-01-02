@@ -2,7 +2,7 @@
     <data>
  
     <template id="assets" inherit_id="point_of_sale.assets">
-        <xpath expr="." position="inside">
+        <xpath expr="." position="replace">
                 <script type="text/javascript" src="/my_module/static/src/js/screens.js"></script>
             </xpath>
         </template>
