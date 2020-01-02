@@ -3,6 +3,7 @@ odoo.define('point_of_sale.screens', function (require) {
 
 var screens = require('point_of_sale.screens');
 var PosBaseWidget = require('point_of_sale.BaseWidget');
+var gui = require('point_of_sale.gui');
     
 
     var NumpadWidget = PosBaseWidget.extend({
@@ -141,9 +142,149 @@ var PosBaseWidget = require('point_of_sale.BaseWidget');
 });
 
     
+    
+    var ProductScreenWidget = ScreenWidget.extend({
+    template:'ProductScreenWidget',
+
+    init: function() {
+        this._super.apply(this, arguments);
+        this.timeout = null;
+        this.buffered_key_events = [];
+    },
+
+    start: function(){ 
+
+        var self = this;
+
+        this.actionpad = new ActionpadWidget(this,{});
+        this.actionpad.replace(this.$('.placeholder-ActionpadWidget'));
+
+        this.numpad = new NumpadWidget(this,{});
+        this.numpad.replace(this.$('.placeholder-NumpadWidget'));
+
+        this.order_widget = new OrderWidget(this,{
+            numpad_state: this.numpad.state,
+        });
+        this.order_widget.replace(this.$('.placeholder-OrderWidget'));
+
+        this.product_list_widget = new ProductListWidget(this,{
+            click_product_action: function(product){ self.click_product(product); },
+            product_list: this.pos.db.get_product_by_category(0)
+        });
+        this.product_list_widget.replace(this.$('.placeholder-ProductListWidget'));
+
+        this.product_categories_widget = new ProductCategoriesWidget(this,{
+            product_list_widget: this.product_list_widget,
+        });
+        this.product_categories_widget.replace(this.$('.placeholder-ProductCategoriesWidget'));
+
+        this.action_buttons = {};
+        var classes = action_button_classes;
+        for (var i = 0; i < classes.length; i++) {
+            var classe = classes[i];
+            if ( !classe.condition || classe.condition.call(this) ) {
+                var widget = new classe.widget(this,{});
+                widget.appendTo(this.$('.control-buttons'));
+                this.action_buttons[classe.name] = widget;
+            }
+        }
+        if (_.size(this.action_buttons)) {
+            this.$('.control-buttons').removeClass('oe_hidden');
+        }
+        this._onKeypadKeyDown = this._onKeypadKeyDown.bind(this);
+    },
+
+    click_product: function(product) {
+       if(product.to_weight && this.pos.config.iface_electronic_scale){
+           this.gui.show_screen('scale',{product: product});
+       }else{
+           this.pos.get_order().add_product(product);
+       }
+    },
+
+    show: function(reset){
+        this._super();
+        if (reset) {
+            this.product_categories_widget.reset_category();
+            this.numpad.state.reset();
+        }
+        if (this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard) {
+            this.chrome.widget.keyboard.connect($(this.el.querySelector('.searchbox input')));
+        }
+        $(document).on('keydown.productscreen', this._onKeypadKeyDown);
+    },
+    close: function(){
+        this._super();
+        if(this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard){
+            this.chrome.widget.keyboard.hide();
+        }
+        $(document).off('keydown.productscreen', this._onKeypadKeyDown);
+    },
+
+    /**
+     * Buffers the key typed and distinguishes between actual keystrokes and
+     * scanner inputs.
+     *
+     * @private
+     * @param {event} ev - The keyboard event.
+    */
+    _onKeypadKeyDown: function (ev) {
+        //prevent input and textarea keydown event
+        if(!_.contains(["INPUT", "TEXTAREA"], $(ev.target).prop('tagName'))) {
+            clearTimeout(this.timeout);
+            this.buffered_key_events.push(ev);
+            this.timeout = setTimeout(_.bind(this._handleBufferedKeys, this), BarcodeEvents.max_time_between_keys_in_ms);
+        }
+    },
+
+    /**
+     * Processes the buffer of keys filled by _onKeypadKeyDown and
+     * distinguishes between the actual keystrokes and scanner inputs.
+     *
+     * @private
+    */
+    _handleBufferedKeys: function () {
+        // If more than 2 keys are recorded in the buffer, chances are high that the input comes
+        // from a barcode scanner. In this case, we don't do anything.
+        if (this.buffered_key_events.length > 2) {
+            this.buffered_key_events = [];
+            return;
+        }
+
+        for (var i = 0; i < this.buffered_key_events.length; ++i) {
+            var ev = this.buffered_key_events[i];
+            if ((ev.key >= "0" && ev.key <= "9") || ev.key === ".") {
+               this.numpad.state.appendNewChar(ev.key);
+            }
+            else {
+                switch (ev.key){
+                    case "Backspace":
+                        this.numpad.state.deleteLastChar();
+                        break;
+                    case "Delete":
+                        this.numpad.state.resetValue();
+                        break;
+                    case ",":
+                        this.numpad.state.appendNewChar(".");
+                        break;
+                    case "+":
+                        this.numpad.state.positiveSign();
+                        break;
+                    case "-":
+                        this.numpad.state.negativeSign();
+                        break;
+                }
+            }
+        }
+        this.buffered_key_events = [];
+    },
+});
+gui.define_screen({name:'products', widget: ProductScreenWidget});
+    
     return {
          ActionpadWidget: ActionpadWidget,
           NumpadWidget: NumpadWidget,
+        ProductScreenWidget: ProductScreenWidget,
     };
 
 });
