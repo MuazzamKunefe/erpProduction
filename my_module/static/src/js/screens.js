@@ -81,15 +81,9 @@ console.log("hi i'm ",screens);
                 //Alert("Access denied!");
                    
                                                     if(!has_valid_product_lot){
-                        self.gui.show_popup('confirm',{
-                            'title': _t('Empty Serial/Lot Number'),
-                            'body':  _t('One or more product(s) required serial/lot number.'),
-                            confirm: function(){
-                               
-                            },
-                        });
+this.gui.show_popup('error',_t('ccess denied'));
                     }else{
-                       
+                       this.gui.show_popup('error',_t('ccess denied'));
                     }
                 
             }else{
