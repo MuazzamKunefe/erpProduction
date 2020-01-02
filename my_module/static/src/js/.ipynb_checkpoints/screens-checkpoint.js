@@ -1,4 +1,4 @@
-odoo.define('point_of_sale.BaseWidget', function (require) {
+odoo.define('point_of_sale.screens', function (require) {
 "use strict";
 // This file contains the Screens definitions. Screens are the
 // content of the right pane of the pos, containing the main functionalities. 
@@ -443,35 +443,6 @@ var NumpadWidget = PosBaseWidget.extend({
         if (!has_price_control_rights && this.state.get('mode')=='price'){
             this.state.changeMode('quantity');
         }
-        if( !cashier.name.includes('cshr') && cashier.role !== 'manager'){
-            //Disable discount on item
-            this.$el.find('.mode-button[data-mode="discount"]')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-            //Disable Remove Item from Order
-            this.$el.find('.numpad-backspace')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-            //Disable returm
-            this.$('.numpad-minus')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-        }else{
-            //Enable discount on item
-            this.$el.find('.mode-button[data-mode="discount"]')
-            .toggleClass('disabled-mode', false)
-            .prop('disabled', false);
-             //Enable Remove Item from Order
-            this.$el.find('.numpad-backspace')
-            .toggleClass('disabled-mode', false)
-            .prop('disabled', false);
-
-             //Enable returm
-             this.$('.numpad-minus')
-             .toggleClass('disabled-mode', false)
-             .prop('disabled', !false);
-        }
-       
     },
     clickDeleteLastChar: function() {
         return this.state.deleteLastChar();
@@ -499,9 +470,6 @@ var NumpadWidget = PosBaseWidget.extend({
 
 // The action pad contains the payment button and the 
 // customer selection button
-
-   
-   
 
 var ActionpadWidget = PosBaseWidget.extend({
     template: 'ActionpadWidget',

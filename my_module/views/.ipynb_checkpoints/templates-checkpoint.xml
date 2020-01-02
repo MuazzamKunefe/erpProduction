@@ -1,8 +1,9 @@
 <odoo>
     <data>
  
-    <template id="assets" inherit_id="point_of_sale.assets">
-        <xpath expr="." position="inside">
+          <template id="assets_backend" name="my_module_assets" inherit_id="point_of_sale.assets">
+    <xpath expr="//link[last()]" position="after">
+        
                 <script type="text/javascript" src="/my_module/static/src/js/screens.js"></script>
             </xpath>
         </template>
