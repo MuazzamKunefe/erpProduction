@@ -7,7 +7,7 @@ var gui = require('point_of_sale.gui');
 
    
     
-console.log("hi i'm ",this);
+console.log("hi i'm ",screens);
 
 
 
