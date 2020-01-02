@@ -73,8 +73,16 @@ console.log("hi i'm ",screens);
               
                 console.log(cashier);        
                 console.log( cashier.name === 'testpos');
-                if(cashier.name.includes('cshr')  || cashier.role === 'manager'){
-                    if(!has_valid_product_lot){
+               if( !cashier.name.includes('cshr') && cashier.role !== 'manager'){
+                   //return "";
+                console.log( "Else no permission");        
+
+                console.log( cashier);        
+                //Alert("Access denied!");
+                
+            }else{
+
+                                 if(!has_valid_product_lot){
                         self.gui.show_popup('confirm',{
                             'title': _t('Empty Serial/Lot Number'),
                             'body':  _t('One or more product(s) required serial/lot number.'),
@@ -85,12 +93,6 @@ console.log("hi i'm ",screens);
                     }else{
                         self.gui.show_screen('payment');
                     }
-            }else{
-                //return "";
-                console.log( "Else no permission");        
-
-                console.log( cashier);        
-                //Alert("Access denied!");
                
             }
             }
