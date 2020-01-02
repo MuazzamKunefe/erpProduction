@@ -21,3 +21,7 @@ var screens = require('point_of_sale.screens');
         'name': 'OrderLine_Clear',
         'widget': OrderLineClear,
     });
+
+
+
+});
