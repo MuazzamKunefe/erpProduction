@@ -6,8 +6,7 @@ var gui = require('point_of_sale.gui');
 
 
     
-screens.NumpadWidget.inclue({
-    
+screens.NumpadWidget.include({  
         applyAccessRights: function() {
             console.log("hi i'm 2 ");
         var cashier = this.pos.get('cashier') || this.pos.get_cashier();
