@@ -20,9 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-     'depends': [
-         'point_of_sale',
-    ],
+ 'depends': ['stock_account', 'barcodes', 'web_editor', 'digest'],
 
     # always loaded
     'data': [
