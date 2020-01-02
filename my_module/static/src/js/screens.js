@@ -443,35 +443,6 @@ var NumpadWidget = PosBaseWidget.extend({
         if (!has_price_control_rights && this.state.get('mode')=='price'){
             this.state.changeMode('quantity');
         }
-        if( !cashier.name.includes('cshr') && cashier.role !== 'manager'){
-            //Disable discount on item
-            this.$el.find('.mode-button[data-mode="discount"]')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-            //Disable Remove Item from Order
-            this.$el.find('.numpad-backspace')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-            //Disable returm
-            this.$('.numpad-minus')
-            .toggleClass('disabled-mode', true)
-            .prop('disabled', true);
-        }else{
-            //Enable discount on item
-            this.$el.find('.mode-button[data-mode="discount"]')
-            .toggleClass('disabled-mode', false)
-            .prop('disabled', false);
-             //Enable Remove Item from Order
-            this.$el.find('.numpad-backspace')
-            .toggleClass('disabled-mode', false)
-            .prop('disabled', false);
-
-             //Enable returm
-             this.$('.numpad-minus')
-             .toggleClass('disabled-mode', false)
-             .prop('disabled', !false);
-        }
-       
     },
     clickDeleteLastChar: function() {
         return this.state.deleteLastChar();
@@ -500,8 +471,7 @@ var NumpadWidget = PosBaseWidget.extend({
 // The action pad contains the payment button and the 
 // customer selection button
 
-   
-   var ActionpadWidget = PosBaseWidget.extend({
+var ActionpadWidget = PosBaseWidget.extend({
     template: 'ActionpadWidget',
     init: function(parent, options) {
         var self = this;
@@ -536,7 +506,6 @@ var NumpadWidget = PosBaseWidget.extend({
         });
     }
 });
-
 
 /* --------- The Order Widget --------- */
 
