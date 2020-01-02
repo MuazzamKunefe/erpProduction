@@ -1,4 +1,4 @@
-odoo.define('pos_clear_orderline.pos', function (require) {
+odoo.define('point_of_sale.screens', function (require) {
 "use strict";
 
 var screens = require('point_of_sale.screens');
