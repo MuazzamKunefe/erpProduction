@@ -81,9 +81,9 @@ console.log("hi i'm ",screens);
                 //Alert("Access denied!");
                    
                                                     if(!has_valid_product_lot){
-self.gui.show_popup('error');
+self.gui.show_screen('receipt');
                     }else{
-                       self.gui.show_popup('error');
+                      self.gui.show_screen('receipt');
                     }
                 
             }else{
