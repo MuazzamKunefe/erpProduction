@@ -140,5 +140,10 @@ var PosBaseWidget = require('point_of_sale.BaseWidget');
     }
 });
 
+    
+    return {
+         ActionpadWidget: ActionpadWidget,
+          NumpadWidget: NumpadWidget,
+    };
 
 });
