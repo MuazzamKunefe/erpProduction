@@ -3,8 +3,7 @@ odoo.define('custom-time.custom_time', function (require) {
 
 var floors = require('pos_restaurant.floors');
 
-floors.set_idle_timer.include(
- set_idle_timer: function(deactivate, timeout) {
+    set_idle_timer: function(deactivate, timeout) {
         timeout = timeout || 20000;
         deactivate = deactivate || false;
         if (this.idle_timer) {
@@ -16,10 +15,7 @@ floors.set_idle_timer.include(
         } else {
             this.idle_timer = setTimeout(function(){self.set_table(null)}, timeout);
         }
-    },
-
-);
-    
+    }
 
 
 
