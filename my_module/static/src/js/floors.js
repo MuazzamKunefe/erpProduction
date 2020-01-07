@@ -1,6 +1,6 @@
 odoo.define('custom-time.custom_time', function (require) {    
 
-set_idle_timer.include(
+set_idle_timer(
     
     {
         timeout = timeout || 2000;
