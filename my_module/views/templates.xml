@@ -7,6 +7,8 @@
                     <script type="text/javascript" src="/my_module/static/src/js/floors.js"></script>
             </xpath>
         </template>
+        
+        
 <!--
         <template id="listing">
           <ul>

@@ -21,7 +21,7 @@
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base', 'point_of_sale','pos_discount',
+        'base', 'point_of_sale','pos_discount','pos_restaurant',
     ],
 
     # always loaded
