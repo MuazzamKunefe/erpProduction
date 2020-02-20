@@ -30,6 +30,9 @@
         'views/views.xml',
         'views/templates.xml',
     ],
+            'qweb': [
+        'static/src/xml/multiprint.xml',
+        ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
