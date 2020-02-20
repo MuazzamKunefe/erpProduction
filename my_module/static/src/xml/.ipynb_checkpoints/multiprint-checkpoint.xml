@@ -18,6 +18,11 @@
 
     <t t-name="OrderChangeReceipt">
         <div class="pos-receipt">
+            <!--Majal modifications started here to apply some formatting required-->
+            <br />
+            <br />
+            <br />
+            <br />
             <div class="pos-receipt-order-data"><t t-esc="changes.name" /></div>
             <t t-if="changes.floor || changes.table">
                 <br />
@@ -62,11 +67,13 @@
                 <br />
                 <br />
                 <t t-foreach="changes.new" t-as="change">
-                    <div>
-                        <t t-esc="change.qty"/>
-                        <span t-esc="change.name_wrapped[0]" class="pos-receipt-right-align"/>
+                    <div style="font-weight:bold; font-size:125%">
+                        <span t-esc="change.qty" class="pos-receipt-right-align"/>
+                        <span t-esc="change.name_wrapped"/>
+                        
+                        
                     </div>
-                    <t t-call="NameWrapped"/>
+                 
                     <t t-if="change.note">
                         <div>
                             NOTE
@@ -75,10 +82,15 @@
                         <div><span class="pos-receipt-left-padding">--- <t t-esc="change.note" /></span></div>
                         <br/>
                     </t>
+                    <br/>
                 </t>
                 <br />
                 <br />
             </t>
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
     </t>
 
