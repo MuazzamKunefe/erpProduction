@@ -1,0 +1,4 @@
+[submodule "cnc-modules"]
+	path = cnc-modules
+	url = git@muazzam:MuazzamKunefe/cnc-modules.git
+	branch = master
